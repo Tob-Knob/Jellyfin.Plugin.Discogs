@@ -9,6 +9,14 @@
     "versions": [
       {
         "changelog": "",
+        "checksum": "44d31751adb13baebcb682425e09b222",
+        "sourceUrl": "https://github.com/Tob-Knob/Jellyfin.Plugin.Discogs/releases/download/v0.1.1/discogs_0.1.1.0.zip",
+        "targetAbi": "10.8.13.0",
+        "timestamp": "2024-01-16T17:27:23Z",
+        "version": "0.1.1.0"
+      },
+      {
+        "changelog": "",
         "checksum": "5d9977daa41f5372b8011fcbee3e6acd",
         "sourceUrl": "https://github.com/Tob-Knob/Jellyfin.Plugin.Discogs/releases/download/v0.1.0/discogs_0.1.0.0.zip",
         "targetAbi": "10.8.0.0",
