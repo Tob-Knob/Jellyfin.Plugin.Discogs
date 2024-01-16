@@ -54,6 +54,7 @@ namespace Jellyfin.Plugin.Discogs.Providers
         {
             var loggingScope = new AlbumLoggingScope
             {
+                MethodName = nameof(GetSearchResults),
                 AlbumName = searchInfo.Name,
                 AlbumYear = searchInfo.Year,
             };
@@ -73,6 +74,10 @@ namespace Jellyfin.Plugin.Discogs.Providers
                 var release = await _discogsClient.GetReleaseAsync(int.Parse(releaseId, CultureInfo.InvariantCulture), cancellationToken).ConfigureAwait(false);
                 if (release != null)
                 {
+                    loggingScope.AlbumReleaseId = release.id.ToString(CultureInfo.InvariantCulture);
+                    loggingScope.AlbumReleaseMasterId = release.master_id.ToString(CultureInfo.InvariantCulture);
+
+                    _logger.LogInformation("{AlbumScope} Found album", loggingScope);
                     var result = new RemoteSearchResult
                     {
                         Name = release.title,
@@ -136,6 +141,12 @@ namespace Jellyfin.Plugin.Discogs.Providers
                         var release = await _discogsClient.GetReleaseAsync(searchResult.id, cancellationToken).ConfigureAwait(false);
                         if (release != null)
                         {
+                            if (release.master_id != 0)
+                            {
+                                loggingScope.AlbumReleaseMasterId = release.master_id.ToString(CultureInfo.InvariantCulture);
+                            }
+
+                            _logger.LogInformation("{AlbumScope} Creating search result for release", loggingScope);
                             var result = new RemoteSearchResult
                             {
                                 Name = release.title,
@@ -155,7 +166,10 @@ namespace Jellyfin.Plugin.Discogs.Providers
                             }
 
                             result.SetProviderId(Constants.ProviderIds.Album, release.id.ToString(CultureInfo.InvariantCulture));
-                            result.SetProviderId(Constants.ProviderIds.AlbumMaster, release.master_id.ToString(CultureInfo.InvariantCulture));
+                            if (release.master_id != 0)
+                            {
+                                result.SetProviderId(Constants.ProviderIds.AlbumMaster, release.master_id.ToString(CultureInfo.InvariantCulture));
+                            }
 
                             searchResults.Add(result);
                         }
@@ -179,6 +193,7 @@ namespace Jellyfin.Plugin.Discogs.Providers
         {
             var loggingScope = new AlbumLoggingScope
             {
+                MethodName = nameof(GetMetadata),
                 AlbumName = info.Name,
                 AlbumYear = info.Year
             };
@@ -190,6 +205,11 @@ namespace Jellyfin.Plugin.Discogs.Providers
 
             var releaseId = info.GetReleaseId();
             var releaseMasterId = info.GetReleaseMasterId();
+            if (releaseMasterId == "0")
+            {
+                releaseMasterId = null;
+            }
+
             var artistId = info.GetDiscogsArtistId();
 
             loggingScope.AlbumReleaseId = releaseId;
@@ -283,7 +303,12 @@ namespace Jellyfin.Plugin.Discogs.Providers
                 }
 
                 result.Item.SetProviderId(Constants.ProviderIds.Album, release.id.ToString(CultureInfo.InvariantCulture));
-                result.Item.SetProviderId(Constants.ProviderIds.AlbumMaster, release.master_id.ToString(CultureInfo.InvariantCulture));
+
+                if (release.master_id != 0)
+                {
+                    result.Item.SetProviderId(Constants.ProviderIds.AlbumMaster, release.master_id.ToString(CultureInfo.InvariantCulture));
+                }
+
                 result.Item.SetProviderId(Constants.ProviderIds.Artist, artistId);
 
                 return result;
@@ -325,6 +350,7 @@ namespace Jellyfin.Plugin.Discogs.Providers
 
             var loggingScope = new AlbumLoggingScope
             {
+                MethodName = nameof(GetImages),
                 AlbumName = item.Name
             };
 

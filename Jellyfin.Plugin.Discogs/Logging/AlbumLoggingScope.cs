@@ -14,9 +14,11 @@ namespace Jellyfin.Plugin.Discogs.Logging
 
         public string? AlbumArtistId { get; set; }
 
+        public string MethodName { get; set; } = string.Empty;
+
         public override string ToString()
         {
-            return $"[AlbumName={AlbumName}] [AlbumYear={AlbumYear}] [AlbumReleaseId={AlbumReleaseId}] [AlbumReleaseMasterId={AlbumReleaseMasterId}] [AlbumArtist={AlbumArtistId}]";
+            return $"[MethodName={MethodName}] [AlbumName={AlbumName}] [AlbumYear={AlbumYear}] [AlbumReleaseId={AlbumReleaseId}] [AlbumReleaseMasterId={AlbumReleaseMasterId}] [AlbumArtist={AlbumArtistId}]";
         }
     }
 }
