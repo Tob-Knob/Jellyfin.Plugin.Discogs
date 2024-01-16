@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "category": "Metadata",
+    "description": "Integrate with the Discogs database for music metadata\n",
+    "guid": "983c0fbd-d662-41e0-b85c-99d71f1b3935",
+    "name": "Discogs",
+    "overview": "Discogs music metadata provider",
+    "owner": "Tob-Knob",
+    "versions": [
+      {
+        "changelog": "",
+        "checksum": "5d9977daa41f5372b8011fcbee3e6acd",
+        "sourceUrl": "https://github.com/Tob-Knob/Jellyfin.Plugin.Discogs/releases/download/v0.1.0/discogs_0.1.0.0.zip",
+        "targetAbi": "10.8.0.0",
+        "timestamp": "2024-01-16T16:54:03Z",
+        "version": "0.1.0.0"
+      }
+    ]
+  }
+]
