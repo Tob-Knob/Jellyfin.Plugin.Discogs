@@ -2,7 +2,7 @@
 name: "Discogs"
 guid: "983c0fbd-d662-41e0-b85c-99d71f1b3935"
 version: "0.1.0.0"
-targetAbi: "10.8.0.0"
+targetAbi: "10.8.13.0"
 framework: "net6.0"
 overview: "Discogs music metadata provider"
 description: >
@@ -10,6 +10,7 @@ description: >
 category: "Metadata"
 owner: "Tob-Knob"
 artifacts:
-- "Jellyfin.Plugin.Discogs.dll"
+  - "Jellyfin.Plugin.Discogs.dll"
+  - "DiscogsClient.dll"
 changelog: >
   changelog
