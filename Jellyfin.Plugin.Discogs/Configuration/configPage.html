@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Discogs</title>
+</head>
+<body>
+    <div data-role="page" class="page type-interior pluginConfigurationPage discogsConfigPage" data-require="emby-input,emby-button,emby-checkbox">
+        <div data-role="content">
+            <div class="content-primary">
+                <form class="discogsConfigForm">
+                    <div class="inputContainer">
+                        <input is="emby-input" type="text" id="authToken" required label="API Token" />
+                        <div class="fieldDescription">Personal Access Token used to authenticate requests. Enables 60 requests per minute.</div>
+                    </div>
+                    <label class="checkboxContainer">
+                        <input is="emby-checkbox" type="checkbox" id="replaceArtistName" />
+                        <span>When an artist is found during a metadata search, replace the artist name with the value on the server.</span>
+                    </label>
+                    <br />
+                    <div>
+                        <button is="emby-button" type="submit" class="raised button-submit block"><span>Save</span></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var DiscogsPluginConfig = {
+                uniquePluginId: "983c0fbd-d662-41e0-b85c-99d71f1b3935"
+            };
+
+            document.querySelector('.discogsConfigPage')
+                .addEventListener('pageshow', function () {
+                    Dashboard.showLoadingMsg();
+                    ApiClient.getPluginConfiguration(DiscogsPluginConfig.uniquePluginId).then(function (config) {
+                        var server = document.querySelector('#authToken');
+                        server.value = config.AuthToken;
+                        server.dispatchEvent(new Event('change', {
+                            bubbles: true,
+                            cancelable: false
+                        }));
+
+                        document.querySelector('#replaceArtistName').checked = config.ReplaceArtistName;
+
+                        Dashboard.hideLoadingMsg();
+                    });
+                });
+
+            document.querySelector('.discogsConfigForm')
+                .addEventListener('submit', function (e) {
+                    Dashboard.showLoadingMsg();
+
+                    ApiClient.getPluginConfiguration(DiscogsPluginConfig.uniquePluginId).then(function (config) {
+                        config.AuthToken = document.querySelector('#authToken').value;
+                        config.ReplaceArtistName = document.querySelector('#replaceArtistName').checked;
+
+                        ApiClient.updatePluginConfiguration(DiscogsPluginConfig.uniquePluginId, config).then(Dashboard.processPluginConfigurationUpdateResult);
+                    });
+
+                    e.preventDefault();
+                    return false;
+                });
+        </script>
+    </div>
+</body>
+</html>
