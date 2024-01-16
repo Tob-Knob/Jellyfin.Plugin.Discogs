@@ -12,5 +12,8 @@ owner: "Tob-Knob"
 artifacts:
   - "Jellyfin.Plugin.Discogs.dll"
   - "DiscogsClient.dll"
+  - "RestSharp.dll"
+  - "RestSharpHelper.dll"
+  - "RateLimiter.dll"
 changelog: >
   changelog
